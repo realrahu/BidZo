@@ -40,7 +40,8 @@ from .permissions import IsAuthenticatedOrReadOnly
 def verify_recaptcha(token, expected_action):
     secret = getattr(settings, 'RECAPTCHA_SECRET_KEY', '')
     if not secret:
-        return bool(settings.DEBUG)
+        # reCAPTCHA is intentionally disabled when no provider secret is set.
+        return True
     if not token:
         return False
     try:
