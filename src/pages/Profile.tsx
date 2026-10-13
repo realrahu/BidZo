@@ -21,7 +21,8 @@ export const ProfilePage: React.FC = () => {
   useEffect(() => {
     async function fetchUserBids() {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'}/api/users/me/bids/`, {
+        const apiBase = import.meta.env.VITE_API_BASE_URL || (import.meta.env.PROD ? 'https://bidzo-backend-fqzw.onrender.com/api' : 'http://localhost:8000/api');
+        const res = await fetch(`${apiBase}/users/me/bids/`, {
           headers: getAuthHeaders(),
         });
         

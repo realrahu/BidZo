@@ -43,7 +43,9 @@ ALLOWED_HOSTS = [
     ).split(',') if host.strip()
 ]
 CSRF_TRUSTED_ORIGINS = [
-    origin.strip() for origin in os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',')
+    origin.strip() for origin in os.environ.get(
+        'CSRF_TRUSTED_ORIGINS', 'https://bid-zo.vercel.app' if not DEBUG else ''
+    ).split(',')
     if origin.strip()
 ]
 
@@ -178,7 +180,7 @@ DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'BidZo <no-reply@bidzo
 CORS_ALLOWED_ORIGINS = [
     origin.strip() for origin in os.environ.get(
         'CORS_ALLOWED_ORIGINS',
-        'http://localhost:5173,http://127.0.0.1:5173' if DEBUG else '',
+        'http://localhost:5173,http://127.0.0.1:5173' if DEBUG else 'https://bid-zo.vercel.app',
     ).split(',') if origin.strip()
 ]
 CORS_ALLOW_ALL_ORIGINS = False
@@ -186,6 +188,9 @@ CORS_ALLOW_ALL_ORIGINS = False
 # HTTPS protections are enabled automatically in production. Set these only
 # behind a correctly configured HTTPS reverse proxy/load balancer.
 SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', str(not DEBUG)).lower() in {'1', 'true', 'yes', 'on'}
+# Render terminates TLS at its load balancer and forwards the original scheme.
+# Trust that header so Django does not redirect an already-HTTPS request forever.
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SESSION_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_SECURE = not DEBUG
 SECURE_HSTS_SECONDS = int(os.environ.get('SECURE_HSTS_SECONDS', '31536000' if not DEBUG else '0'))

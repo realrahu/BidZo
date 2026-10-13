@@ -10,13 +10,12 @@ class RealtimeService {
   connect(auctionId?: string) {
     if (this.socket || this.isConnecting) return;
 
-    // Use ws:// for HTTP and wss:// for HTTPS
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    // If backend is running on a different host, use VITE_API_BASE_URL to extract host.
-    // For now, assume it's running on localhost:8000 for development.
-    const host = import.meta.env.VITE_API_BASE_URL
-      ? new URL(import.meta.env.VITE_API_BASE_URL).host
-      : 'localhost:8000';
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || (import.meta.env.PROD
+      ? 'https://bidzo-backend-fqzw.onrender.com/api'
+      : 'http://localhost:8000/api');
+    const backendUrl = new URL(apiBaseUrl);
+    const protocol = backendUrl.protocol === 'https:' ? 'wss:' : 'ws:';
+    const host = backendUrl.host;
 
     this.url = auctionId ? `${protocol}//${host}/ws/auctions/${auctionId}/` : `${protocol}//${host}/ws/auctions/`;
 
