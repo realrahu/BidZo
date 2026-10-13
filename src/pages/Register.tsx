@@ -203,9 +203,9 @@ export const Register = () => {
                     </motion.div>
                   )}
 
-                  <motion.p variants={itemVariants} className="rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-center text-xs leading-relaxed text-gray-400">
-                    Enter your email and phone number to create an account. No verification code is needed for this college project.
-                  </motion.p>
+                  
+                    
+                  
 
                   <motion.div variants={itemVariants} className="flex items-center gap-4">
                     <div className="flex-1 h-px bg-gradient-to-r from-transparent to-white/10"></div>
